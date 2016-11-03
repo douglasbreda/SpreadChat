@@ -31,11 +31,9 @@ public class Connect {
                
         try {
             oConnection.connect(InetAddress.getByName(pIpAdress), 4803, pUserName, false, true);
-            sRetorno = "Conexão realizada com sucesso";
             ConnectToGroup(pUserName, pGroup);
         } catch (UnknownHostException | SpreadException ex) {
             Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
-            sRetorno = "Ocorreu um erro ao conectar: " + ex.toString();
         }
         
         return sRetorno;
@@ -47,10 +45,8 @@ public class Connect {
         
         try {
             oConnection.disconnect();
-            sRetorno = "Usuário desconectado";
         } catch (SpreadException ex) {
             Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
-            sRetorno = "Ocorreu um erro ao desconectar" + ex.toString();
         }
         
         return sRetorno;
@@ -61,14 +57,21 @@ public class Connect {
         String sRetorno = "";
         try {
             oGroup.join(oConnection, pGroupName);
-            sRetorno = pUserName + " entrou no grupo " + pGroupName;
             sGroupName = pGroupName;
         } catch (SpreadException ex) {
             Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
-            sRetorno = "Ocorreu um erro ao conectar ao grupo " + pGroupName + ": " + ex.toString();
         }
         
         return sRetorno;
+    }
+    
+    //Remove the user from the group
+    public void LeaveTheGroup(){
+        try {
+            oGroup.leave();
+        } catch (SpreadException ex) {
+            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     //Send a messagem to a group
@@ -94,5 +97,10 @@ public class Connect {
     //Removes a listener from the connection
     public void RemoverListener(ListenerMessages pListener){
         oConnection.remove(pListener);
+    }
+    
+    //Returns if is connected
+    public boolean IsConnected(){
+        return oConnection.isConnected();
     }
 }

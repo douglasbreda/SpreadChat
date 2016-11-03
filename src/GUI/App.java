@@ -49,7 +49,7 @@ public class App extends javax.swing.JFrame {
         txtGroup.setText(pGroupName);
         txtUser.setText(pUserName);
         
-        oConnect.AddListenerToConnection(new ListenerMessages(txtMessages, lstUsers));
+        oConnect.AddListenerToConnection(new ListenerMessages(txtMessages, lstUsers, oConnect));
     }
     
     /**
@@ -82,6 +82,11 @@ public class App extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -278,6 +283,10 @@ public class App extends javax.swing.JFrame {
         oConnect.SendMessage(txtSendMessage.getText().getBytes());
         txtSendMessage.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        oConnect.LeaveTheGroup();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

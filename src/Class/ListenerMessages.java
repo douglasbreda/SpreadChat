@@ -5,7 +5,6 @@
  */
 package Class;
 
-import java.nio.charset.StandardCharsets;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JTextArea;
@@ -19,14 +18,14 @@ public class ListenerMessages implements AdvancedMessageListener {
 
     private JTextArea txtMessages;
     private JList<String> lstUsers;
+    private Connect oConnection;
 
-    public ListenerMessages(JTextArea txtMessages, JList<String> lstUsers) {
+    public ListenerMessages(JTextArea txtMessages, JList<String> lstUsers, Connect oConnection) {
         this.txtMessages = txtMessages;
         this.lstUsers = lstUsers;
+        this.oConnection = oConnection;
     }
 
-    
-    
     @Override
     public void regularMessageReceived(SpreadMessage sm) {
         txtMessages.setText(txtMessages.getText() + "\n"
@@ -35,8 +34,15 @@ public class ListenerMessages implements AdvancedMessageListener {
 
     @Override
     public void membershipMessageReceived(SpreadMessage sm) {
-        txtMessages.setText(txtMessages.getText() + "\n"
-                + sm.getSender() + ": " + new String(sm.getData()));
+        String sMessage = new String(sm.getData());
+        sMessage = sMessage.substring(sMessage.indexOf("#"));
+        
+        if (sm.getMembershipInfo().isCausedByJoin()) {
+            txtMessages.setText(txtMessages.getText() + "\n" + sMessage + " joined the group");
+        } else {
+            txtMessages.setText(txtMessages.getText() + "\n" + sMessage + " left the group");
+            
+        }
 
         AddListMembers(sm.getMembershipInfo());
     }
