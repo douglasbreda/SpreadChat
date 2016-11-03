@@ -28,9 +28,9 @@ public class Connect {
     public String ConnectToServer(String pIpAdress, String pUserName, String pGroup){
         
         String sRetorno = "";
-                
+               
         try {
-            oConnection.connect(InetAddress.getByName(pIpAdress), 4803, pUserName, true, true);
+            oConnection.connect(InetAddress.getByName(pIpAdress), 4803, pUserName, false, true);
             sRetorno = "Conexão realizada com sucesso";
             ConnectToGroup(pUserName, pGroup);
         } catch (UnknownHostException | SpreadException ex) {
